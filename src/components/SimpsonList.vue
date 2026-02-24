@@ -1,51 +1,32 @@
 <script setup>
-import { ref, computed } from 'vue'
-import { simpsons } from '@/constants/simpson'
+import { ref, onMounted } from 'vue'
 import SimpsonCard from './SimpsonCard.vue'
 
-const search = ref('')
-const selectedGender = ref('')
+const simpsons = ref([])
 
-const filteredSimpsons = computed(() => {
-  return simpsons.filter((simpson) => {
-    const matchesSearch = simpson.name.toLowerCase().includes(search.value.toLowerCase())
+const getSimpsons = async () => {
+  try {
+    const response = await fetch('https://thesimpsonsapi.com/api')
+    const data = await response.json()
 
-    const matchesGender =
-      selectedGender.value === '' || simpson.gender.includes(selectedGender.value)
+    simpsons.value = data.docs
+  } catch (error) {
+    console.error('Error al obtener datos:', error)
+  }
+}
 
-    return matchesSearch && matchesGender
-  })
-})
+onMounted(getSimpsons)
 </script>
 
 <template>
-  <div class="simpsons">
-    <SimpsonCard v-for="simpson in filteredSimpsons" :key="simpson.id" :simpson="simpson" />
+  <div>
+    <div class="simpsons">
+      <SimpsonCard v-for="simpson in simpsons" :key="simpson._id" :simpson="simpson" />
+    </div>
   </div>
 </template>
 
 <style scoped>
-.search {
-  padding: 10px;
-  margin-bottom: 20px;
-  width: 300px;
-}
-
-.filters {
-  margin-bottom: 20px;
-}
-
-.filters button {
-  margin: 5px;
-  padding: 8px 12px;
-  cursor: pointer;
-}
-
-.active {
-  background-color: #e4e006;
-  color: white;
-}
-
 .simpsons {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
