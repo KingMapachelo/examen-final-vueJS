@@ -37,6 +37,7 @@ function goToDetail() {
   height: auto;
   object-fit: cover;
   border-radius: 12px;
+  background-color: white;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 

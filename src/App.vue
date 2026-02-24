@@ -24,6 +24,7 @@ function goHome() {
 #app {
   font-family: Arial, sans-serif;
   text-align: center;
+  background-color: aqua;
 }
 
 header {
